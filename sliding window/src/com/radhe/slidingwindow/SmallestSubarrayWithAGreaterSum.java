@@ -22,7 +22,7 @@ package com.radhe.slidingwindow;
 
 public class SmallestSubarrayWithAGreaterSum {
 
-    public void findMinSubArray(int desiredSum, int[] inputArray) {
+    public void findMaxSumSubArray(int desiredSum, int[] inputArray) {
         if (inputArray.length == 0) {
             System.out.println("Empty input array");
         }
@@ -45,12 +45,14 @@ public class SmallestSubarrayWithAGreaterSum {
                 windowStartIndex++;
             }
         }
+
+        System.out.println("Smallest sub array size : " + smallestSize);
     }
 
     public static void main() {
         final int[] inputArray = {2, 1, 5, 2, 3, 2};
         final int size = 7;
         final MaximumSumSubarrayOfSizeK maximumSumSubarrayOfSizeK = new MaximumSumSubarrayOfSizeK();
-        maximumSumSubarrayOfSizeK.findMaxSumSubArray(inputArray, size);
+        maximumSumSubarrayOfSizeK.findMaxSumSubArray(size, inputArray);
     }
 }
