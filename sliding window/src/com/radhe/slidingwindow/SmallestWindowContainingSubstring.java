@@ -28,7 +28,6 @@ import java.util.HashMap;
 public class SmallestWindowContainingSubstring {
 
     public String findSubstring(String str, String pattern) {
-        System.out.println("String : " + str + ", pattern : " + pattern);
         if (null == str || null == pattern || pattern.length() > str.length()) {
             return "";
         }
@@ -36,6 +35,7 @@ public class SmallestWindowContainingSubstring {
         int windowStart = 0;
         int startIndex = -1;
         int minLength = Integer.MAX_VALUE;
+        int matchCount = 0;
 
         final HashMap<Character, Integer> freqMap = new HashMap<>();
 
@@ -47,27 +47,25 @@ public class SmallestWindowContainingSubstring {
             final char rightChar = str.charAt(windowEnd);
             if (freqMap.containsKey(rightChar)) {
                 freqMap.put(rightChar, freqMap.get(rightChar) - 1);
+                if (freqMap.get(rightChar) == 0) {
+                    matchCount++;
+                }
+            }
 
+            if (matchCount == freqMap.size()) {
                 // shrink window
-                while (freqMap.get(rightChar) < 0 || !freqMap.containsKey(str.charAt(windowStart))) {
+                while (freqMap.getOrDefault(str.charAt(windowStart), 0) != 0 || !freqMap.containsKey(str.charAt(windowStart))) {
                     char leftChar = str.charAt(windowStart++);
                     if (freqMap.containsKey(leftChar)) {
                         freqMap.put(leftChar, freqMap.get(leftChar) + 1);
                     }
                 }
-            }
 
-            if (isHashMapElementsZero(freqMap)) {
-                System.out.println("isHashMapElementsZero " + true);
                 int currLength = windowEnd - windowStart + 1;
                 if (currLength < minLength) {
                     minLength = currLength;
                     startIndex = windowStart;
                 }
-
-                System.out.println("startIndex " + startIndex + ", minLength " + minLength);
-            } else {
-                System.out.println("isHashMapElementsZero " + false);
             }
         }
 
@@ -78,24 +76,12 @@ public class SmallestWindowContainingSubstring {
         return "";
     }
 
-    private boolean isHashMapElementsZero(HashMap<Character, Integer> hashMap) {
-        boolean isEmpty = true;
-        for (int data : hashMap.values()) {
-            System.out.println("data " + data);
-            if (data != 0) {
-                isEmpty = false;
-                break;
-            }
-        }
-
-        return isEmpty;
-    }
-
     public static void main() {
         final SmallestWindowContainingSubstring sample = new SmallestWindowContainingSubstring();
         System.out.println("Min length substring: " + sample.findSubstring("aabdec", "abc"));
         System.out.println("Min length substring: " + sample.findSubstring("aabdec", "abac"));
         System.out.println("Min length substring: " + sample.findSubstring("abdbca", "abc"));
         System.out.println("Min length substring: " + sample.findSubstring("adcad", "abc"));
+        System.out.println("Min length substring: " + sample.findSubstring("aaaaaaaaaaaabbbbbcdd", "abcdd"));
     }
 }
