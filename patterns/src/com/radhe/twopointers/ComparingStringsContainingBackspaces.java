@@ -26,7 +26,7 @@ package com.radhe.twopointers;
  */
 public class ComparingStringsContainingBackspaces {
     public boolean backspaceCompare(String first, String second) {
-        if (null == first || null == second) {
+        if(null == first || null == second) {
             return false;
         }
 
@@ -35,44 +35,44 @@ public class ComparingStringsContainingBackspaces {
         char bsp = '#';
 
         while (fLength >= 0 || sLength >= 0) {
-
             // handle backspace for first string
             int bspCount = 0;
-            while (fLength >= 0 && first.charAt(fLength) == bsp) {
+            while(fLength >= 0) {
+                if(first.charAt(fLength) == bsp) {
+                    bspCount++;
+                } else if (bspCount > 0) {
+                    bspCount--;
+                } else {
+                    break;
+                }
                 fLength--;
-                bspCount++;
             }
-
-            fLength -= bspCount;
 
             // handle backspace for second string
             bspCount = 0;
-            while (sLength >= 0 && second.charAt(sLength) == bsp) {
+            while(sLength >= 0) {
+                if(second.charAt(sLength) == bsp) {
+                    bspCount++;
+                } else if (bspCount > 0) {
+                    bspCount--;
+                } else {
+                    break;
+                }
                 sLength--;
-                bspCount++;
             }
 
-            sLength -= bspCount;
-
-            if ((fLength >= 0 && first.charAt(fLength) == bsp) || (sLength >= 0 && second.charAt(sLength) == bsp)) {
-                continue;
-            }
-
-            if (fLength >= 0 && sLength >= 0) {
+            if (fLength < 0 && sLength < 0) {
+                return true;
+            } else if (fLength < 0 || sLength < 0) {
+                return false;
+            } else {
                 if (first.charAt(fLength) != second.charAt(sLength)) {
                     return false;
                 }
                 fLength--;
                 sLength--;
-            } else if (fLength < 0 && sLength < 0) {
-                return true;
             }
         }
-
-        if (fLength >= 0 || sLength >= 0) {
-            return false;
-        }
-
         return true;
     }
 
